@@ -1,0 +1,6 @@
+[book]
+authors = ["Thomas van Doornmalen"]
+language = "en"
+multilingual = false
+src = "src"
+title = "jlrs tutorial"
