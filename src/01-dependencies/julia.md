@@ -1,6 +1,6 @@
 # Julia
 
-jlrs currently supports Julia 1.6 up to and including Julia 1.11. Using the most recent stable version is recommended. While juliaup can be used, manually installing Julia is recommended. The reason is that to compile jlrs successfully, the path to the Julia's header files and library must be known and this can be tricky to achieve with juliaup.
+jlrs currently supports Julia 1.10 up to and including Julia 1.12. Using the most recent stable version is recommended. While juliaup can be used, manually installing Julia is recommended. The reason is that to compile jlrs successfully, the path to the Julia's header files and library must be known and this can be tricky to achieve with juliaup.
 
 There are several platform-dependent ways to make these paths known:
 
