@@ -54,10 +54,10 @@ It's important to set the `-rdynamic` linker flag when we embed Julia on Linux, 
 
 `RUSTFLAGS="-Clink-args=-rdynamic" cargo build --features julia-1-10`
 
-It's also possible to set this flag with a `config.toml` file in the project's root directory:
+It's also possible to set this flag with a `.cargo/config.toml` file in the project's root directory:
 
 ```toml
-[target.linux]
+[target.'cfg(all(target_os = "linux"))']
 rustflags = [ "-C", "link-args=-rdynamic" ]
 ```
 
