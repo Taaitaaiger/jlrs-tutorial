@@ -10,7 +10,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let s = JuliaString::new(&mut frame, "Hello, World!").as_value();
         assert!(s.cast::<JuliaString>().is_ok());
 
@@ -29,7 +29,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let one = Value::new(&mut frame, 1usize);
         let unboxed = one.unbox::<usize>().expect("cannot be unboxed as usize");
         assert_eq!(unboxed, 1);
@@ -45,7 +45,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<4>(|mut frame| {
+    handle.local_scope::<_, 4>(|mut frame| {
         // Normally, this custom type would have been defined in some module.
         // Safety: Defining a new type is safe.
         let custom_type = unsafe {
@@ -65,7 +65,7 @@ fn main() {
         // Safety: the constructor of CustomType is safe to call
         let inst = unsafe {
             custom_type
-                .call0(&mut frame)
+                .call(&mut frame, [])
                 .expect("cannot call constructor of CustomType")
         };
 

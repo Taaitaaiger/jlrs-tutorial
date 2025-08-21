@@ -74,7 +74,7 @@ use jlrs::prelude::*;
 use testing_libraries_tutorial::{testing_libraries_tutorial_init_fn, OpaqueInt};
 
 fn create_opaque_int<'target, Tgt: Target<'target>>(target: &Tgt) {
-    target.local_scope::<1>(|mut frame| {
+    target.local_scope::<_, 1>(|mut frame| {
         let opaque_int_ref = OpaqueInt::new(0);
 
         // Safety: we immediately root the unrooted data.
@@ -89,7 +89,7 @@ fn create_opaque_int<'target, Tgt: Target<'target>>(target: &Tgt) {
 }
 
 fn mutate_opaque_int<'target, Tgt: Target<'target>>(target: &Tgt) {
-    target.local_scope::<1>(|mut frame| {
+    target.local_scope::<_, 1>(|mut frame| {
         let opaque_int_ref = OpaqueInt::new(0);
 
         // Safety: we immediately root the unrooted data.
@@ -114,7 +114,7 @@ fn mutate_opaque_int<'target, Tgt: Target<'target>>(target: &Tgt) {
 fn it_works() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<0>(|frame| {
+    handle.local_scope::<_, 0>(|frame| {
         // Safety: we only call the init function once, all exported types
         // will be created in the `Main` module. The second argument must
         // be set to 1.

@@ -12,7 +12,7 @@ fn test_case_2<'target, Tgt: Target<'target>>(_target: &Tgt) {}
 #[test]
 fn test_fn() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
-    handle.local_scope::<0>(|frame| {
+    handle.local_scope::<_, 0>(|frame| {
         test_case_1(&frame);
         test_case_2(&frame);
     });

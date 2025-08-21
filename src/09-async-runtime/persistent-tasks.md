@@ -25,7 +25,7 @@ impl PersistentTask for AccumulatorTask {
             let init_v = Value::new(&mut local_frame, self.init_value);
 
             // Safety: we're just calling the constructor of `Ref`, which is safe.
-            let state = unsafe { ref_ctor.call1(&mut async_frame, init_v) }.into_jlrs_result()?;
+            let state = unsafe { ref_ctor.call(&mut async_frame, [init_v]) }?;
             Ok(state)
         })
     }
@@ -40,8 +40,7 @@ impl PersistentTask for AccumulatorTask {
         let setindex_func = Module::base(&frame).global(&mut frame, "setindex!")?;
 
         // Safety: Calling getindex with state is equivalent to calling `state[]`.
-        let current_sum = unsafe { getindex_func.call1(&mut frame, *state) }
-            .into_jlrs_result()?
+        let current_sum = unsafe { getindex_func.call(&mut frame, [*state]) }?
             .unbox::<f64>()?;
 
         let new_sum = current_sum + input;
@@ -49,7 +48,7 @@ impl PersistentTask for AccumulatorTask {
 
         // Safety: Calling setindex! with state and new_value is equivalent to calling
         // `state[] = new_value`.
-        unsafe { setindex_func.call2(&mut frame, *state, new_value) }.into_jlrs_result()?;
+        unsafe { setindex_func.call(&mut frame, [*state, new_value]) }?;
 
         Ok(new_sum)
     }

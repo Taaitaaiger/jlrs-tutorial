@@ -22,6 +22,6 @@ No target types have been named yet, even frames have only been called just that
 | `ActiveHandle<'target>`             | No      |
 | `&Tgt where Tgt: Target<'target>`   | No      |
 
-These targets belong to three different groups: local targets, dynamic targets, and non-rooting targets.
+These targets belong to three different groups: local targets, dynamic targets, and weak targets.
 
 [^1]: While a mutable reference to a `ReusableSlot` roots the data, it assigns the scope's lifetime to the result which allows the result to live until we leave the scope. This slot can be reused, though, so the data is not guaranteed to remain rooted for the entire `'target` lifetime. For this reason unrooted data is returned.

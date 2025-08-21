@@ -10,14 +10,14 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<3>(|mut frame| {
+    handle.local_scope::<_, 3>(|mut frame| {
         let one = Value::new(&mut frame, 1usize);
         let println_fn = Module::base(&frame)
             .global(&mut frame, "println")
             .expect("println not found in Base");
 
         // Safety: calling println with an integer is safe
-        unsafe { println_fn.call1(&mut frame, one).expect("println threw an exception") };
+        unsafe { println_fn.call(&mut frame, [one]).expect("println threw an exception") };
     });
 }
 ```
@@ -28,7 +28,7 @@ The first use of the frame happens in the call to `Value::new`, which converts d
 
 Most functions are globals in a module, `println` is defined in the `Base` module. Julia modules can be accessed via the `Module` type, which is a managed type just like `Value`. The functions `Module::base` and `Module::main` provide access to the `Base` and `Main` modules respectively. These functions take an immutable reference to a frame to prevent them from existing outside a scope, but they don't need to be rooted and this doesn't count as a use of the frame. Globals in Julia modules can be accessed with `Module::global`, we use the frame a second time when we call this method to root its result.[^1]
 
-Finally we call `println_fn` with the frame and one argument. This is the third and last use of the frame. Any `Value` is potentially callable, the `Call` trait provides methods to call them with any number of arguments. Specialized methods like `Call::call1` exist to call functions with 3 or fewer arguments, `Call::call` accepts an arbitrary number of arguments. Every argument must be a `Value`.
+Finally we call `println_fn` with the frame and one argument. This is the third and last use of the frame. Any `Value` is potentially callable, the `Call` trait provides methods to call them with any number of arguments. Every argument must be a `Value`.
 
 Calling Julia functions is unsafe for mostly the same reason as evaluating Julia code is, nothing prevents us from calling `unsafe_load` with a wild pointer. Other risks involve thread-safety and mutably aliasing data that is directly accessed from Rust, which can't be statically prevented. In practice, most Julia code is as safe to call from Rust as it is from Julia.
 
@@ -42,14 +42,14 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<3>(|mut frame| {
+    handle.local_scope::<_, 3>(|mut frame| {
         let s = JuliaString::new(&mut frame, "Hello, World!").as_value();
         let println_fn = Module::base(&frame)
             .global(&mut frame, "println")
             .expect("println not found in Base");
 
         // Safety: calling println with a string is safe
-        unsafe { println_fn.call1(&mut frame, s).expect("println threw an exception") };
+        unsafe { println_fn.call(&mut frame, [s]).expect("println threw an exception") };
     });
 }
 ```

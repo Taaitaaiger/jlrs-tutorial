@@ -28,7 +28,7 @@ fn main() {
     Builder::new().start_mt(|mt_handle| {
         let t1 = mt_handle.spawn(move |mut mt_handle| {
             mt_handle.with(|handle| {
-                handle.local_scope::<1>(|mut frame| {
+                handle.local_scope::<_, 1>(|mut frame| {
                     // Safety: long_running_op doesn't interact with Julia
                     unsafe { gc_safe(long_running_op) };
 

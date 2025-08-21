@@ -1,6 +1,6 @@
 # Rust
 
-The minimum supported Rust version (MSRV) is currently 1.79, but some features may require a more recent version. The MSRV can be bumped in minor releases of jlrs.[^1]
+The minimum supported Rust version (MSRV) is currently 1.85, but some features may require a more recent version. The MSRV can be bumped in minor releases of jlrs.[^1]
 
 Note for Windows users: only the GNU toolchain is supported for dynamic libraries, applications that embed Julia can use either the GNU or MSVC toolchain.
 

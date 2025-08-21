@@ -19,7 +19,7 @@ where
             .expect("+ not found in Base");
 
         // Safety: calling + is safe
-        unsafe { func.call2(target, a, b) }
+        unsafe { func.call(target, [a, b]) }
     })
 }
 
@@ -67,7 +67,7 @@ fn main() {
 }
 ```
 
-While a dynamic scope can be nested like a local scope can, this can only be done by calling `GcFrame::scope`. Due to requiring a stack, it's not possible to let an arbitrary target create a new dynamic scope.[^1] Allocating and resizing this stack is relatively expensive, and threading it through our application can be complicated, so it's best to stick with local scopes.
+While a dynamic scope can be nested like a local scope can, this can only be done by calling `Scope::scope`. Due to requiring a stack, it's not possible to let an arbitrary target create a new dynamic scope.[^1] Allocating and resizing this stack is relatively expensive, and threading it through our application can be complicated, so it's preferable to stick with local scopes.
 
 There's one more dynamic target: `AsyncGcFrame`. It's a `GcFrame` with some additional async capabilities, we'll take a closer look when the async runtime is introduced.
 

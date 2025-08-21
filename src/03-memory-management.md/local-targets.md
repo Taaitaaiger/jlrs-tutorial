@@ -19,14 +19,14 @@ where
             .expect("+ not found in Base");
 
         // Safety: calling + is safe
-        unsafe { func.call2(target, a, b) }
+        unsafe { func.call(target, [a, b]) }
     })
 }
 
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let mut output = frame.output();
         let mut reusable_slot = frame.reusable_slot();
 
@@ -82,7 +82,7 @@ where
             .expect("+ not found in Base");
 
         // Safety: calling + is safe
-        unsafe { func.call2(target, a, b) }
+        unsafe { func.call(target, [a, b]) }
     })
 }
 

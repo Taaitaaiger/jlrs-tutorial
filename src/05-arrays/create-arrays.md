@@ -10,7 +10,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let arr1 = TypedArray::<f32>::new(&mut frame, (2, 2))
             .expect("invalid size");
         assert_eq!(arr1.rank(), 2);
@@ -34,7 +34,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = vec![1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_vec(&mut frame, data, (2, 2))
             .expect("incompatible type and layout")
@@ -50,7 +50,7 @@ fn main() {
         assert_eq!(arr.element_type(), arr2.element_type());
     });
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let mut data = vec![1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_slice(&mut frame, &mut data, (2, 2))
             .expect("incompatible type and layout")
@@ -76,7 +76,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_slice_cloned(&mut frame, &data, (2, 2))
             .expect("incompatible type and layout")
@@ -91,7 +91,7 @@ fn main() {
         assert_eq!(arr.element_type(), arr2.element_type());
     });
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, (2, 2))
             .expect("incompatible type and layout")
@@ -116,12 +116,12 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let arr = VectorAny::new_any(&mut frame, 3).expect("invalid size");
         assert_eq!(arr.rank(), 1);
     });
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = [1u8, 2, 3, 4];
         let arr = TypedVector::<u8>::from_bytes(&mut frame, &data).expect("invalid size");
         assert_eq!(arr.rank(), 1);

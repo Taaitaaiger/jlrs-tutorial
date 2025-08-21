@@ -8,7 +8,7 @@ In this chapter we'll use the `julia_module!` macro to export constants, types a
 [package]
 name = "julia_module_tutorial"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [profile.dev]
 panic = "abort"
@@ -22,7 +22,7 @@ panic = "abort"
 crate-type = ["cdylib"]
 
 [dependencies]
-jlrs = { version = "0.21", features = ["jlrs-derive", "ccall"] }
+jlrs = { version = "0.22", features = ["jlrs-derive", "ccall"] }
 ```
 
 It's important that we don't enable any runtime features like `local-rt` when we build a dynamic library.

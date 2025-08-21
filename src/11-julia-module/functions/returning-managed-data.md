@@ -39,7 +39,7 @@ julia> JuliaModuleTutorial.add(1.0, 2.0)
 3.0
 ```
 
-We didn't have to create a scope because a `WeakHandle` is a non-rooting target itself. We can skip rooting the data because we call no other functions that could hit a safepoint before returning from `add`. The `weak_handle!` macro must be used in combination with `match` or `if let`, we can't `unwrap` or `expect` it.
+We didn't have to create a scope because a `WeakHandle` is a weak target itself. We can skip rooting the data because we call no other functions that could hit a safepoint before returning from `add`. The `weak_handle!` macro must be used in combination with `match` or `if let`, we can't `unwrap` or `expect` it.
 
 We can return arrays the same way, all `ArrayBase` aliases have a `Ret`-alias.
 

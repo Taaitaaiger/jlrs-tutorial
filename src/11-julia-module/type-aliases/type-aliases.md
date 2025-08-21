@@ -45,6 +45,7 @@ julia_module! {
 
     type OpaqueF32 = Opaque<f32>;
     in Opaque<f32> fn new(a: f32) -> CCallRefRet<Opaque<f32>> as OpaqueF32;
+}
 ```
 
 ```julia

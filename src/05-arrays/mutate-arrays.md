@@ -15,7 +15,7 @@ fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
     // IndeterminateAccessorMut
-    handle.local_scope::<4>(|mut frame| {
+    handle.local_scope::<_, 4>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let f64_ty = DataType::float64_type(&frame).as_value();
         let mut arr = RankedArray::<2>::from_slice_copied_for(&mut frame, f64_ty, &data, [2, 2])
@@ -38,7 +38,7 @@ fn main() {
     });
 
     // BitsAccessorMut
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let mut arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
@@ -56,7 +56,7 @@ fn main() {
     });
 
     // InlineAccessorMut
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let mut arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
@@ -79,7 +79,7 @@ fn main() {
     });
 
     // ValueAccessorMut
-    handle.local_scope::<3>(|mut frame| {
+    handle.local_scope::<_, 3>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let mut arr = unsafe { Value::eval_string(&mut frame, "Any[:foo, :bar]") }
             .expect("caught an exception")
@@ -100,7 +100,7 @@ fn main() {
     });
 
     // ManagedAccessorMut
-    handle.local_scope::<4>(|mut frame| {
+    handle.local_scope::<_, 4>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let mut arr = unsafe { Value::eval_string(&mut frame, "Symbol[:foo, :bar]") }
             .expect("caught an exception")
@@ -121,7 +121,7 @@ fn main() {
     });
 
     // BitsUnionAccessorMut
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let mut arr =
             unsafe { Value::eval_string(&mut frame, "Union{Int, Float64}[1.0 2; 3 4.0]") }

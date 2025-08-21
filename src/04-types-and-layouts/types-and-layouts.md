@@ -10,7 +10,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let v = Value::new(&mut frame, 1.0f32);
         let dt = v.datatype();
         println!("{:?}", dt);

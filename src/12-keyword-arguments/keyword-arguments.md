@@ -12,7 +12,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<8>(|mut frame| {
+    handle.local_scope::<_, 8>(|mut frame| {
         unsafe {
             let func = Value::eval_string(
                 &mut frame,
@@ -24,20 +24,19 @@ fn main() {
             let b = Value::new(&mut frame, 2.0);
             let c = Value::new(&mut frame, 5.0);
             let d = Value::new(&mut frame, 1.0);
-            let kwargs = named_tuple!(&mut frame, "c" => c, "d" => d);
+            let kwargs = named_tuple!(&mut frame, "c" => c, "d" => d)
+                .expect("invalid keyword arguments");
 
-            let res = func.call2(&mut frame, a, b)
+            let res = func.call(&mut frame, [a, b])
                 .expect("caught exception")
                 .unbox::<f64>()
                 .expect("not an f64");
 
             assert_eq!(res, 15.0);
 
-            let func_with_kwargs = func
+            let res = func
                 .provide_keywords(kwargs)
-                .expect("invalid keyword arguments");
-
-            let res = func_with_kwargs.call2(&mut frame, a, b)
+                .call(&mut frame, [a, b])
                 .expect("caught exception")
                 .unbox::<f64>()
                 .expect("not an f64");

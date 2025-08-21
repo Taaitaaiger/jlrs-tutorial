@@ -14,7 +14,7 @@ We need to change the crate type to `cdylib`, this can be configured in `Cargo.t
 [package]
 name = "julia_lib"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [profile.release]
 panic = "abort"
@@ -33,13 +33,13 @@ We don't need to add jlrs as a dependency, we'll discuss the advantages and disa
 Replace the content of `lib.rs` with the following code:
 
 ```rust,ignore
-#[no_mangle]
+#[unsafe(no_mangle)]`
 pub unsafe extern "C" fn add(a: f64, b: f64) -> f64 {
     a + b
 }
 ```
 
-The function is annotated with `#[no_mangle]` to prevent the name from being mangled. After building with `cargo build` we can find the library in `target/debug`. On Linux it will be named `libjulia_lib.so`, on macOS `libjulia_lib.dylib`, and on Windows `libjulia_lib.dll`. Let's use it!
+The function is annotated with `#[unsafe(no_mangle)]` to prevent the name from being mangled. After building with `cargo build` we can find the library in `target/debug`. On Linux it will be named `libjulia_lib.so`, on macOS `libjulia_lib.dylib`, and on Windows `libjulia_lib.dll`. Let's use it!
 
 Open the Julia REPL in `julia_lib`'s root directory and evaluate the following code:
 

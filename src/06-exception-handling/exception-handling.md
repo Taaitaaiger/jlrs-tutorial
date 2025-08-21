@@ -13,7 +13,7 @@ fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
     // Safety: we don't jump over any pending drops if an exception is thrown.
-    handle.local_scope::<1>(|mut frame| unsafe {
+    handle.local_scope::<_, 1>(|mut frame| unsafe {
         catch_exceptions(
             || {
                 TypedArray::<u8>::new_unchecked(&mut frame, (usize::MAX, usize::MAX));

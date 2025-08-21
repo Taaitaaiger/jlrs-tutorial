@@ -12,7 +12,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let f64_ty = DataType::float64_type(&frame).as_value();
         let arr = RankedArray::<2>::from_slice_copied_for(&mut frame, f64_ty, &data, [2, 2])
@@ -49,7 +49,7 @@ fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
     // BitsAccessor
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
@@ -72,7 +72,7 @@ fn main() {
     });
 
     // InlineAccessor
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
         let arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
@@ -86,7 +86,7 @@ fn main() {
     });
 
     // ValueAccessor
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let arr = unsafe { Value::eval_string(&mut frame, "Any[:foo, :bar]") }
             .expect("caught an exception")
@@ -104,7 +104,7 @@ fn main() {
     });
 
     // ManagedAccessor
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let arr = unsafe { Value::eval_string(&mut frame, "Symbol[:foo, :bar]") }
             .expect("caught an exception")
@@ -120,7 +120,7 @@ fn main() {
     });
 
     // BitsUnionAccessor
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         // Safety: this code only allocates and returns an array
         let arr = unsafe { Value::eval_string(&mut frame, "Union{Int, Float64}[1.0 2; 3 4.0]") }
             .expect("caught an exception")

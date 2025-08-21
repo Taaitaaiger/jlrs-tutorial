@@ -11,7 +11,7 @@ fn main() {
     Builder::new().start_mt(|mt_handle| {
         let t1 = mt_handle.spawn(move |mut mt_handle| {
             mt_handle.with(|handle| {
-                handle.local_scope::<1>(|mut frame| {
+                handle.local_scope::<_, 1>(|mut frame| {
                     // Safety: we're just printing a string
                     unsafe { Value::eval_string(&mut frame, "println(\"Hello from thread 1\")") }
                         .expect("caught exception");

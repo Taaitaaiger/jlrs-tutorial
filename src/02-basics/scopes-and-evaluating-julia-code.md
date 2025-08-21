@@ -16,7 +16,7 @@ use jlrs::prelude::*;
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<1>(|mut frame| {
+    handle.local_scope::<_, 1>(|mut frame| {
         // Safety: we only evaluate a print statement, which is perfectly safe.
         unsafe {
             Value::eval_string(&mut frame, "println(\"Hello, world!\")")
@@ -36,10 +36,10 @@ This line initializes Julia and returns a `LocalHandle` to the runtime. The `Bui
 The handle lets us call into Julia from the current thread, the runtime shuts down when it's dropped. Julia can only be initialized once per process, and can't be reinitialized after it has shut down.
 
 ```rust,ignore
-handle.local_scope::<1>(|mut frame| { /*snip*/ });
+handle.local_scope::<_, 1>(|mut frame| { /*snip*/ });
 ```
 
-Before we can call into Julia we have to create a scope by calling `LocalHandle::local_scope` first. This method takes a constant generic integer and a closure that provides access to a frame. The frame is used to prevent data that is managed by Julia's garbage collector, or GC, from being freed while we're using it from Rust. This is called rooting. We'll call such data managed data.
+Before we can call into Julia we have to create a scope by calling `LocalHandle::local_scope` first. This method takes a constant generic integer and a closure that provides access to a frame; the other generic is the return type of the closure. The frame is used to prevent data that is managed by Julia's garbage collector, or GC, from being freed while we're using it from Rust. This is called rooting. We'll call such data managed data.
 
 An important question to ask is: when can the GC be triggered? The rough answer is whenever managed data is allocated. If the GC is triggered from some thread, it will wait until all threads that can call into Julia have reached a safepoint. Because we're only using a single thread, there are no other threads that need to reach a safepoint and the GC can run immediately, we'll leave it at that for now.
 

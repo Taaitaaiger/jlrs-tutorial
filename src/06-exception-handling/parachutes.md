@@ -10,7 +10,7 @@ use jlrs::{catch::catch_exceptions, data::managed::parachute::AttachParachute, p
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<2>(|mut frame| {
+    handle.local_scope::<_, 2>(|mut frame| {
         // Safety: this is a POF. We attach a parachute to vec
         // to make the GC responsible for dropping it.
         unsafe {

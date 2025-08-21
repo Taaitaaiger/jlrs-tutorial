@@ -23,7 +23,7 @@
   - [Target types](./03-memory-management.md/target-types.md)
     - [Local targets](./03-memory-management.md/local-targets.md)
     - [Dynamic targets](./03-memory-management.md/dynamic-targets.md)
-    - [Non-rooting targets](./03-memory-management.md/non-rooting-targets.md)
+    - [Weak targets](./03-memory-management.md/weak-targets.md)
 
 - [Types and layouts](./04-types-and-layouts/types-and-layouts.md)
   - [`isbits` layouts](./04-types-and-layouts/isbits-layouts.md)

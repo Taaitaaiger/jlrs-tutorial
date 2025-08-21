@@ -22,7 +22,7 @@ end";
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<5>(|mut frame| {
+    handle.local_scope::<_, 5>(|mut frame| {
         let ptr = Value::new(&mut frame, add as *mut c_void);
 
         let a = Value::new(&mut frame, 1.0f64);
@@ -35,7 +35,7 @@ fn main() {
         // Safety: Immutable types are passed and returned by value, so `add`
         // has the correct signature for the `ccall` in `call_rust`. All
         // `add` does is add `a` and `b`, which is perfectly safe.
-        let res = unsafe { func.call3(&mut frame, ptr, a, b) }
+        let res = unsafe { func.call(&mut frame, [ptr, a, b]) }
             .expect("an exception occurred")
             .unbox::<f64>()
             .expect("not an f64");

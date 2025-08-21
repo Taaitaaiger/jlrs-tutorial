@@ -10,12 +10,12 @@ define_static_ref!(ADD_FUNCTION, Value, "Base.+");
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<3>(|mut frame| {
+    handle.local_scope::<_, 3>(|mut frame| {
         let v1 = Value::new(&mut frame, 1.0f64);
         let v2 = Value::new(&mut frame, 2.0f64);
 
         let add_func = static_ref!(ADD_FUNCTION, &frame);
-        let res = unsafe { add_func.call2(&mut frame, v1, v2) }
+        let res = unsafe { add_func.call(&mut frame, [v1, v2]) }
             .expect("caught an exception")
             .unbox::<f64>()
             .expect("wrong type");
@@ -41,12 +41,12 @@ where
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.local_scope::<3>(|mut frame| {
+    handle.local_scope::<_, 3>(|mut frame| {
         let v1 = Value::new(&mut frame, 1.0f64);
         let v2 = Value::new(&mut frame, 2.0f64);
 
         let add_func = add_function(&frame);
-        let res = unsafe { add_func.call2(&mut frame, v1, v2) }
+        let res = unsafe { add_func.call(&mut frame, [v1, v2]) }
             .expect("caught an exception")
             .unbox::<f64>()
             .expect("wrong type");

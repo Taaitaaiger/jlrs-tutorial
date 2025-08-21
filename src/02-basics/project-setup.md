@@ -12,7 +12,7 @@ Open `Cargo.toml`, add jlrs as a dependency and enable the `local_rt` feature. W
 [package]
 name = "julia_app"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [features]
 
@@ -23,13 +23,25 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-jlrs = {version = "0.21", features = ["local-rt"]}
+jlrs = {version = "0.22", features = ["local-rt"]}
 ```
 
-If Julia 1.10 has been installed and we've configured our environment according to the steps in the [dependency chapter], building and running should succeed:
+If Julia has been installed and we've configured our environment according to the steps in the [dependency chapter], building and running should succeed:
 
 ```bash
 cargo build
+```
+
+If you use `juliaup` and `jlrs-launcher`, the following command must be used:
+
+```bash
+jlrs-launcher cargo build
+```
+
+The Julia version can be specified:
+
+```bash
+jlrs-launcher +1.11 cargo build
 ```
 
 It's important to set the `-rdynamic` linker flag when we embed Julia, Julia will perform badly otherwise.[^2] This flag can be set on the command line with the `RUSTFLAGS` environment variable:
