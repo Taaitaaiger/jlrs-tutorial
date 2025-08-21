@@ -35,13 +35,13 @@ cargo build
 If you use `juliaup` and `jlrs-launcher`, the following command must be used:
 
 ```bash
-jlrs-launcher cargo build
+jlrs-launcher run cargo build
 ```
 
 The Julia version can be specified:
 
 ```bash
-jlrs-launcher +1.11 cargo build
+jlrs-launcher run +1.11 cargo build
 ```
 
 It's important to set the `-rdynamic` linker flag when we embed Julia, Julia will perform badly otherwise.[^2] This flag can be set on the command line with the `RUSTFLAGS` environment variable:
