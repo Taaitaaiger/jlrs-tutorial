@@ -2,6 +2,7 @@
 
 Accessing data in a module can be expensive, especially if we need to access it often. These accesses can be cached with a `StaticRef`, which can be defined with the `define_static_ref!` macro and accessed with the `static_ref!` macro.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{define_static_ref, prelude::*, static_ref};
 
@@ -24,9 +25,11 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 It's possible to combine these two operations with `inline_static_ref!`, this is useful if we only need to use the data in a single function or want to expose a separate function to access it.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{inline_static_ref, prelude::*};
 
@@ -55,6 +58,7 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 A `StaticRef` is thread-safe: it's just an atomic pointer internally, which is initialized when it's first accessed. Any thread that can call into Julia can access it, if multiple threads try to access this data before it has been initialazed, all these threads will try to initialize it. The data is globally rooted so we don't need to root it ourselves.[^1]
 

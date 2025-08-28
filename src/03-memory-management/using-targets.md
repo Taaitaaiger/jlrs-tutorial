@@ -4,6 +4,7 @@ Functions that take a target do so by value, which means the target can only be 
 
 This does raise an obvious question: what if the function that takes a target needs to root more than one value? The answer is that targets let us create a nested scope.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -33,6 +34,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 This approach helps avoid rooting managed data longer than necessary. After calling `add`, only its result is rooted. The temporary values we created in that function are no longer rooted because we've left its scope.
 

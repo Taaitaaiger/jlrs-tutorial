@@ -6,6 +6,7 @@ The function that doesn't catch the exception is always unsafe. Julia exceptions
 
 If an exception is thrown and there is no handler available, Julia aborts the process.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{catch::catch_exceptions, prelude::*};
 
@@ -16,7 +17,7 @@ fn main() {
     handle.local_scope::<_, 1>(|mut frame| unsafe {
         catch_exceptions(
             || {
-                TypedArray::<u8>::new_unchecked(&mut frame, (usize::MAX, usize::MAX));
+                TypedArray::<u8>::new_unchecked(&mut frame, [usize::MAX, usize::MAX]);
             },
             |e| {
                 println!("caught exception: {e:?}")
@@ -25,6 +26,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 This example should print `caught exception: ArgumentError("invalid Array dimensions")`.
 

@@ -6,6 +6,7 @@ A quick note on safety: never access an array that's already accessed mutably, e
 
 It's possible to completely ignore the layout of the elements with an `IndeterminateAccessor`. It can be created with the `ArrayBase::indeterminate_data` method. It implements the `Accessor` trait which provides a `get_value` method which returns the element as a `Value`. Unlike Julia, array indexing starts at 0.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -33,6 +34,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 We've seen in the previous chapter that there are three ways a field of a composite type can be stored: it can be stored inline, as a reference to managed data, or as an inlined union. An array element is stored as if it were a field of a composite type with one minor exception, there's a difference between how inlined unions are stored in composite types and arrays.[^1]
 
@@ -42,6 +44,7 @@ If a `Typed(Ranked)Array` is used the correct accessor might be inferred from th
 
 All these accessor types implement `Accessor`, and additionally provide a `get` function to access an element at some index. Excluding the `BitsUnionAccessor`, they also implement `Index`. These implementations accept the same multidimensional indices as the functions that create new arrays do. The `as_slice` and `into_slice` methods provided by the indexable types let us ignore the multidimensionality and access the data as a slice in column-major order.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -135,5 +138,6 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 [^1]: In composite types, the data and the tag that identifies its type are stored adjacently, in an array the flags are collectively stored after the data.

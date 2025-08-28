@@ -4,6 +4,7 @@ A `GcFrame` is a dynamically-sized alternative for `LocalGcFrame`. With a `GcFra
 
 We'll first need to set up a dynamic stack. This is a matter of calling `WithStack::with_stack`, the `WithStack` trait is implemented for `LocalHandle`. Like `LocalGcFrame`, `Output`s and `ReusableSlot`s can be created.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -66,6 +67,7 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 While a dynamic scope can be nested like a local scope can, this can only be done by calling `Scope::scope`. Due to requiring a stack, it's not possible to let an arbitrary target create a new dynamic scope.[^1] Allocating and resizing this stack is relatively expensive, and threading it through our application can be complicated, so it's preferable to stick with local scopes.
 

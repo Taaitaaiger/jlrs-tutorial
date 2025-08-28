@@ -2,6 +2,7 @@
 
 All functions in Julia are generic, we can add new methods as long as the argument types are different from existing methods. If a generic function in Rust takes an argument `T`, we can export it multiple times with different types.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -17,7 +18,9 @@ julia_module! {
     }
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -37,9 +40,11 @@ Closest candidates are:
   return_first_arg(::Int64, ::Int64)
    @ Main.JuliaModuleTutorial none:0
 ```
+<!-- LIBTEST_JL END -->
 
 It's not necessary to use this for-loop construction, it's also valid to repeat the export with the generic types filled in.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -54,9 +59,11 @@ julia_module! {
     fn return_first_arg(a: f64, b: f64) -> f64;
 }
 ```
+<!-- LIBTEST END -->
 
 A type parameter may appear in arbitrary positions, the next example requires enabling the `complex` feature.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{data::layout::complex::Complex, prelude::*};
 
@@ -72,7 +79,9 @@ julia_module! {
     }
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -83,3 +92,4 @@ julia> JuliaModuleTutorial.real_part(ComplexF32(1.0, 2.0))
 julia> JuliaModuleTutorial.real_part(ComplexF64(1.0, 2.0))
 1.0
 ```
+<!-- LIBTEST_JL END -->

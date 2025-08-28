@@ -6,6 +6,7 @@ When `CCallRef<T>` is used as an argument type, the generated function restricts
 
 If `CCallRefRet<T>` is used as a return type, `ccall` returns it as `Ref{T}` and the function as `T`. The main advantage returning `CCallRefRet<T>` has over `TypedValueRet<T>` is that using `CCallRefRet` produces more type-stable code.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
     data::managed::{
@@ -32,7 +33,9 @@ julia_module! {
     fn add(a: CCallRef<f64>, b: CCallRef<f64>) -> CCallRefRet<f64>;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -40,5 +43,6 @@ Main.JuliaModuleTutorial
 julia> JuliaModuleTutorial.add(1.0, 2.0)
 3.0
 ```
+<!-- LIBTEST_JL END -->
 
 [^1]: While both are pointers to the same layout, managed data is guaranteed to be preceded in memory by a tag that identifies its type. This tag isn't guaranteed to be present when an argument is passed by reference.

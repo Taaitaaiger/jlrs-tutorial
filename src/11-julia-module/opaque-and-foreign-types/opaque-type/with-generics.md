@@ -8,6 +8,7 @@ We need to export an opaque type with parameters with every supported type param
 
 It can be useful to expose aliases for specific exported types. This alias can only be used as a constructor if that method is exposed again under the alias's name.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::fmt::Debug;
 
@@ -51,20 +52,23 @@ julia_module! {
     in Opaque<f32> fn new(a: f32) -> CCallRefRet<Opaque<f32>> as OpaqueF32;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
 
-julia> v =  JuliaModuleTutorial.Opaque(Float32(3.0))
+julia> v = JuliaModuleTutorial.Opaque(Float32(3.0))
 Main.JuliaModuleTutorial.Opaque{Float32}()
 
-julia> v =  JuliaModuleTutorial.Opaque(Float64(3.0))
+julia> v = JuliaModuleTutorial.Opaque(Float64(3.0))
 Main.JuliaModuleTutorial.Opaque{Float64}()
 
-julia> v =  JuliaModuleTutorial.OpaqueF32(Float32(3.0))
+julia> v = JuliaModuleTutorial.OpaqueF32(Float32(3.0))
 Main.JuliaModuleTutorial.Opaque{Float32}()
 
 julia> JuliaModuleTutorial.print(v)
 Opaque { _a: 3.0 }
 ```
+<!-- LIBTEST_JL END -->

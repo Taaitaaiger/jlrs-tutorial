@@ -8,6 +8,7 @@ If a function returns an instance of a zero-sized type like `nothing` we don't n
 
 Finally, it's safe to leave data unrooted if we can guarantee the GC won't run until we're done using the data. The GC can be triggered whenever new managed data is allocated.[^1] If the GC determines it needs to run, every thread will be suspended when it reaches a safepoint. The GC runs when all threads have been suspended. If we don't call into Julia while we access the data, we won't hit a safepoint so we can leave it unrooted.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -33,5 +34,6 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 [^1]: The GC can also be triggered manually with `Gc::gc_collect`, all targets implement this trait.

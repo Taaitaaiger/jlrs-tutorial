@@ -16,11 +16,12 @@ To implement a custom mark function correctly, we must mark every instance of Ju
 
 A custom mark function isn't the only thing we need to maintain GC invariants, we'll use the word object to refer to an instance of a managed type. The GC has two generations, young and old. A newly allocated object is young, if it survives a collection cycle it becomes old. The GC can do a full collection cycle and look at both generations, or an incremental one and just look at the young generation. If a young object is only referenced by an old one, we hit a snag: an incremental run only looks at young objects, so it should never see that reference in an old object and free it. To prevent this from happening, we have to insert a write barrier whenever we start referencing an object that might be young. Two cases where a write barrier must be inserted are setting a field to another object, and adding an object to a collection.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::collections::HashMap;
 
 use jlrs::{
-    data::{managed::value::{typed::{TypedValue, TypedValueRet}, ValueRet}, types::foreign_type::{mark::Mark, ForeignType}}, prelude::*,  weak_handle, weak_handle_unchecked
+    data::{managed::value::{typed::{TypedValue, TypedValueRet}, ValueRet}, types::foreign_type::{mark::Mark, ForeignType}}, prelude::*,  weak_handle
 };
 
 // We can introduce additional generics as long as they can be inferred.
@@ -81,7 +82,9 @@ julia_module! {
     in ForeignThing fn set(&mut self, value: Value);
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -97,3 +100,4 @@ julia> JuliaModuleTutorial.set(v, Float32(4.0))
 julia> JuliaModuleTutorial.get(v)
 4.0
 ```
+<!-- LIBTEST_JL END -->

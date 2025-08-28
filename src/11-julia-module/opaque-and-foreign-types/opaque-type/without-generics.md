@@ -6,6 +6,7 @@ When an exported method is called from Julia, an instance of the opaque type mus
 
 To create a constructor, we can export an (associated) function and rename it to the name of the type. The constructor must return either a `CCallRefRet`, a `TypedValueRet`, or a `ValueRet`; opaque types implement `IntoJulia`, so they can be converted with `(Typed)Value::new`. A finalizer that drops the data is automatically registered.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
     data::managed::{ccall_ref::CCallRefRet, value::typed::TypedValue},
@@ -42,7 +43,9 @@ julia_module! {
     in OpaqueInt fn print(&self);
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -53,3 +56,4 @@ Main.JuliaModuleTutorial.OpaqueInt()
 julia> JuliaModuleTutorial.print(v)
 OpaqueInt { _a: 3 }
 ```
+<!-- LIBTEST_JL END -->

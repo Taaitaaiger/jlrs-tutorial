@@ -2,6 +2,7 @@
 
 Throwing an exception is a matter of returning either `Result<T, ValueRet>` or `JlrsResult<T>`. If the error variant is returned it's thrown as an exception, otherwise the result is unwrapped and returned to Julia.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{data::managed::value::ValueRet, prelude::*, weak_handle};
 
@@ -25,7 +26,9 @@ julia_module! {
     fn throws_exception() -> Result<(), ValueRet>;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -36,5 +39,6 @@ Stacktrace:
  [1] top-level scope
    @ REPL[2]:1
 ```
+<!-- LIBTEST_JL END -->
 
 Many methods in jlrs have a name ending in `unchecked`, these methods don't catch exceptions. If such a method is called and an exception is thrown, there must be no pending drops because control flow will directly jump back to Julia. It's recommended to always catch exceptions and rethrow them as in the example.

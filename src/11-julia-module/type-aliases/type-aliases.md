@@ -4,6 +4,7 @@ Sometimes we don't want to rename a type but create additional aliases for it, T
 
 The syntax is `type {{Name}} = {{TypeConstructor}}`. The alias doesn't inherit any constructors, they must be defined for every alias separately.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::fmt::Debug;
 
@@ -47,7 +48,9 @@ julia_module! {
     in Opaque<f32> fn new(a: f32) -> CCallRefRet<Opaque<f32>> as OpaqueF32;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -58,3 +61,4 @@ Main.JuliaModuleTutorial.Opaque{Float32}()
 julia> JuliaModuleTutorial.print(v)
 Opaque { _a: 3.0 }
 ```
+<!-- LIBTEST_JL END -->

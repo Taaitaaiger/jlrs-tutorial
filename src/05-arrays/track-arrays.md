@@ -4,6 +4,7 @@ It's trivial to create multiple mutable accessors to the same array. A band-aid 
 
 Overall, tracking can make accessing arrays safer as long as it's used consistently, but it's unaware of accesses in Julia code.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -45,3 +46,4 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->

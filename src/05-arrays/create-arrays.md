@@ -4,6 +4,7 @@ Functions that create new arrays can mostly be divided into two classes: `Typed(
 
 In addition to the element type, these functions take the desired dimensions of the array as an argument. Up to rank 4, tuples of `usize` can be used to express these dimensions. It's also possible to use `[usize; N]`, `&[usize; N]`, and `&[usize]`. If the rank of the array and the dimensions are known at compile time and they don't match, the code will fail to compile.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -11,7 +12,7 @@ fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
     handle.local_scope::<_, 2>(|mut frame| {
-        let arr1 = TypedArray::<f32>::new(&mut frame, (2, 2))
+        let arr1 = TypedArray::<f32>::new(&mut frame, [2, 2])
             .expect("invalid size");
         assert_eq!(arr1.rank(), 2);
 
@@ -23,11 +24,13 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 The `new(_for)` functions return an array whose elements haven't been initialized.[^1] It's also possible to wrap an existing `Vec` or slice with `from_vec(_for)` and `from_slice(_for)`. These functions require that the elements are laid out correctly for an array whose element type is `T`. If the layout of the elements is `U`, this layout must be correct for `T`. This connection is expressed with the `HasLayout` trait, which connects a type constructor with its layout type. They're the same type as long as no type parameters have been elided.
 
 The `from_vec(_for)` functions take ownership of a `Vec`, which is dropped when the array is freed by the GC. The `from_slice(_for)` functions borrow their data from Rust instead. `Value` and `Array` have a second lifetime called `'data`. This lifetime is set to the lifetime of the borrow to prevent this array from being accessed after the borrow ends. Be aware that Julia is unaware of this lifetime, so there's nothing that prevents us from keeping the array alive by assigning it to a global variable or sending it to some background thread. It's your responsibility to guarantee this doesn't happen, which is one of the reasons why the methods to call Julia functions are unsafe.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -36,7 +39,7 @@ fn main() {
 
     handle.local_scope::<_, 2>(|mut frame| {
         let data = vec![1.0f64, 2., 3., 4.];
-        let arr = TypedArray::<f64>::from_vec(&mut frame, data, (2, 2))
+        let arr = TypedArray::<f64>::from_vec(&mut frame, data, [2, 2])
             .expect("incompatible type and layout")
             .expect("invalid size");
         assert_eq!(arr.rank(), 2);
@@ -52,7 +55,7 @@ fn main() {
 
     handle.local_scope::<_, 2>(|mut frame| {
         let mut data = vec![1.0f64, 2., 3., 4.];
-        let arr = TypedArray::<f64>::from_slice(&mut frame, &mut data, (2, 2))
+        let arr = TypedArray::<f64>::from_slice(&mut frame, &mut data, [2, 2])
             .expect("incompatible type and layout")
             .expect("invalid size");
         assert_eq!(arr.rank(), 2);
@@ -67,9 +70,11 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 The functions `from_slice_cloned(_for)` and `from_slice_copied(_for)` use `new(_for)` to allocate the array, then clone or copy the elements from a given slice to this array. These functions avoid the finalizer of `from_vec(_for)` and the lifetime limitations of `from_slice(_for)`, at the cost of cloning or copying the elements.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -78,7 +83,7 @@ fn main() {
 
     handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
-        let arr = TypedArray::<f64>::from_slice_cloned(&mut frame, &data, (2, 2))
+        let arr = TypedArray::<f64>::from_slice_cloned(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
             .expect("invalid size");
         assert_eq!(arr.rank(), 2);
@@ -93,7 +98,7 @@ fn main() {
 
     handle.local_scope::<_, 2>(|mut frame| {
         let data = [1.0f64, 2., 3., 4.];
-        let arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, (2, 2))
+        let arr = TypedArray::<f64>::from_slice_copied(&mut frame, &data, [2, 2])
             .expect("incompatible type and layout")
             .expect("invalid size");
         assert_eq!(arr.rank(), 2);
@@ -107,9 +112,11 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 Finally, there are two specialized functions. `TypedVector::<Any>::new_any` allocates a vector that can hold elements of any type. `TypedVector::<u8>::from_bytes` can convert anything that can be referenced as a slice of bytes to a `TypedVector<u8>`, it's similar to `TypedVector::<u8>::from_slice_copied`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -132,5 +139,6 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 [^1]: If the elements reference other managed data, the array storage will be initialized to 0.

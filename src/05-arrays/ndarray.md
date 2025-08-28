@@ -2,6 +2,7 @@
 
 `BitsAccessor`, `InlineAccessor`, and `BitsAccessorMut` are compatible with ndarray via the `NdArrayView` and `NdArrayViewMut` traits. This requires enabling jlrs's `jlrs-ndarray` feature.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{
     convert::ndarray::{NdArrayView, NdArrayViewMut},
@@ -61,3 +62,4 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->

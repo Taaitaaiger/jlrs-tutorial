@@ -2,6 +2,7 @@
 
 Blocking tasks are the simplest kind of task, they're closures that take a `GcFrame` which are sent to the runtime thread and executed in a dynamic scope. As their name implies, when a blocking task is executed the runtime thread is blocked until the task has completed.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -30,6 +31,7 @@ fn main() {
     thread_handle.join().expect("runtime thread panicked")
 }
 ```
+<!-- DOCTEST END -->
 
 Sending a task is a two-step process. The `AsyncHandle::blocking_task` method returns an instance of `Dispatch`, which provides sync and async methods to dispatch the task. If the backing channel is full, `Dispatch::try_dispatch` fails but returns itself as an `Err` to allow retrying later.
 

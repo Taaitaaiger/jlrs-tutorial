@@ -4,6 +4,7 @@ In the previous section we printed `"Hello, World!"` from Julia by evaluating `p
 
 What we really want to do is call Julia functions with arbitrary arguments. Let's start with `println(1)`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -21,6 +22,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 The capacity of the frame is set to `3` because `&mut frame` is used three times to root managed data.
 
@@ -36,6 +38,7 @@ One thing that should be noted is that while calling a function is more efficien
 
 All of that said, we didn't want to print `1`, we wanted to print `Hello, World!`. If we tried the most obvious thing and replaced `1usize` in the code above with `"Hello, World!"`, we'd see that this would fail to compile because `&str` doesn't implement `IntoJulia`. We need to use another managed type, `JuliaString`, which maps to Julia's `String` type.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -53,6 +56,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 So far we've encountered three managed types, `Value`, `Module`, and `JuliaString`, we'll see several more in the future. All managed types implement the `Managed` trait and have at least one lifetime that encodes their scope, the method `Managed::as_value` can be used to convert managed data to a `Value`.
 

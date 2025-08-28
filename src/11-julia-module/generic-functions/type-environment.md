@@ -4,6 +4,7 @@ In every function we've exported so far, pretty much all argument and return typ
 
 We can use the `tvar!` macro to create a type parameter, this macro only supports single-character names. To create a type parameter `C`, we use `tvar!('C')`. The environment can be created with the `tvars!` macro, which must contain all used parameters in a valid order. The types in the signature must not include any bounds, bounds must only be used in the environment. To create the typevar `C` with an upper bound, we use `tvar!('C'; UpperBoundType)` where `UpperBoundType` is the type constructor of the upper bound. Rust macro's don't like `<` in this position so the name and bounds are seperated with a semicolon instead of `<:`.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
     data::{
@@ -33,7 +34,9 @@ julia_module! {
     fn print_args(_array: TypedValue<tvar!('A')>, _data: TypedValue<tvar!('T')>) use GenericEnv;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -59,6 +62,7 @@ Closest candidates are:
   print_args(::A, ::T) where {T<:AbstractFloat, N, A<:AbstractArray{T, N}}
    @ Main.JuliaModuleTutorial none:0
 ```
+<!-- LIBTEST_JL END -->
 
 To rename a function that uses a type environment, we have to put `as {{name}}` before `use {{EnvType}}`.
 

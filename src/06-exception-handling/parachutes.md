@@ -4,6 +4,7 @@ If we can't avoid data that must be dropped, it might be possible to attach a pa
 
 A parachute can be attached by calling `AttachParachute::attach_parachute`, this trait is implemented for any type that is `Sized + Send + Sync + 'static`. The resulting `WithParachute` derefences to the original type, the parachute can be removed by calling `WithParachute::remove_parachute`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{catch::catch_exceptions, data::managed::parachute::AttachParachute, prelude::*};
 
@@ -16,7 +17,7 @@ fn main() {
         unsafe {
             catch_exceptions(
                 || {
-                    let dims = (usize::MAX, usize::MAX);
+                    let dims = [usize::MAX, usize::MAX];
                     let vec = vec![1usize];
                     let mut with_parachute = vec.attach_parachute(&mut frame);
                     let arr = TypedArray::<u8>::new_unchecked(&mut frame, dims);
@@ -30,5 +31,6 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 We've attached a parachute to `vec` so it's fine that the next line throws an exception. The GC will eventually take care of dropping it for us.

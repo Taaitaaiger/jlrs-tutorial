@@ -6,6 +6,7 @@ Calling a function with custom keyword arguments involves a few small steps:
 2. Provide those arguments to the function we want to call with `ProvideKeyword::provide_keywords`.
 3. Call the resulting `WithKeywords` instance with the positional arguments; `WithKeywords` implements `Call`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -35,8 +36,7 @@ fn main() {
             assert_eq!(res, 15.0);
 
             let res = func
-                .provide_keywords(kwargs)
-                .call(&mut frame, [a, b])
+                .call_kw(&mut frame, [a, b], kwargs)
                 .expect("caught exception")
                 .unbox::<f64>()
                 .expect("not an f64");
@@ -46,3 +46,4 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->

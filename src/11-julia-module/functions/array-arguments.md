@@ -4,12 +4,15 @@ Without jlrs we had to convert arrays to a pointer to their first element if we 
 
 Any of the aliases of `ArrayBase` can be used as an argument type, they enforce the obvious restrictions: `Array` only enforces that the argument is an array, `TypedArray` puts restrictions on the element type, `RankedArray` on the rank, and `TypedRankedArray` on both. Other aliases like `Vector` are expressed in terms of these aliases so they can also be used as argument types.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
 // Safety: the array must not be mutated from another thread
 unsafe fn sum_array(array: TypedArray<f64>) -> f64 {
-    array.bits_data().as_slice().iter().sum()
+    unsafe {
+        array.bits_data().as_slice().iter().sum()
+    }
 }
 
 julia_module! {
@@ -18,7 +21,9 @@ julia_module! {
     fn sum_array(array: TypedArray<f64>) -> f64;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -29,3 +34,4 @@ julia> JuliaModuleTutorial.sum_array([1.0 2.0])
 julia> JuliaModuleTutorial.sum_array([1.0; 2.0])
 3.0
 ```
+<!-- LIBTEST_JL END -->

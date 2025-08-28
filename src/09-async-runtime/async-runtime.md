@@ -2,6 +2,7 @@
 
 The async runtime lets us run Julia on a background thread, its handle lets us send tasks to this thread. We need to enable the `async-rt` feature to use it. Some tasks support async operations, so we'll also need an async executor. A tokio-based executor is available when the `tokio-rt` feature is enabled, this feature automatically enables `async-rt` as well. The async runtime requires  using at least Rust 1.85.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -16,6 +17,7 @@ fn main() {
     thread_handle.join().expect("runtime thread panicked")
 }
 ```
+<!-- DOCTEST END -->
 
 We've configured Julia to use 4 threads.[^1] The builder is upgraded to an `AsyncBuilder` by providing it with the necessary configuration. Here we've configure the runtime to use the tokio-based executor without the I/O driver, and to support 3 concurrent tasks.[^2] If you want to use this driver, enable the `tokio-net` feature and change the argument of `Tokio::new` to `true`.
 

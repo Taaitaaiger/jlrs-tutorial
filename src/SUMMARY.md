@@ -18,12 +18,12 @@
 
 # Getting familiar
 
-- [Targets](./03-memory-management.md/memory-management.md)
-  - [Using targets and nested scopes](./03-memory-management.md/using-targets.md)
-  - [Target types](./03-memory-management.md/target-types.md)
-    - [Local targets](./03-memory-management.md/local-targets.md)
-    - [Dynamic targets](./03-memory-management.md/dynamic-targets.md)
-    - [Weak targets](./03-memory-management.md/weak-targets.md)
+- [Targets](./03-memory-management/memory-management)
+  - [Using targets and nested scopes](./03-memory-management/using-targets.md)
+  - [Target types](./03-memory-management/target-types.md)
+    - [Local targets](./03-memory-management/local-targets.md)
+    - [Dynamic targets](./03-memory-management/dynamic-targets.md)
+    - [Weak targets](./03-memory-management/weak-targets.md)
 
 - [Types and layouts](./04-types-and-layouts/types-and-layouts.md)
   - [`isbits` layouts](./04-types-and-layouts/isbits-layouts.md)

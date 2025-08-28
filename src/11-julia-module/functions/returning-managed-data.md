@@ -10,6 +10,7 @@ Every managed type in jlrs has a `'scope` lifetime, to return managed data from 
 
 In short, to return managed data we'll need to convert it to a `Weak` type with static lifetimes first. All managed types have a `Ret` alias, which is the `Weak` alias with static lifetimes. These `Ret`-aliases implement `CCallReturn`. Converting managed data to a `Ret` type is a matter of calling `Managed::leak`.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
     data::managed::value::typed::{TypedValue, TypedValueRet},
@@ -30,7 +31,9 @@ julia_module! {
     fn add(a: f64, b: f64) -> TypedValueRet<f64>;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -38,11 +41,13 @@ Main.JuliaModuleTutorial
 julia> JuliaModuleTutorial.add(1.0, 2.0)
 3.0
 ```
+<!-- LIBTEST_JL END -->
 
 We didn't have to create a scope because a `WeakHandle` is a weak target itself. We can skip rooting the data because we call no other functions that could hit a safepoint before returning from `add`. The `weak_handle!` macro must be used in combination with `match` or `if let`, we can't `unwrap` or `expect` it.
 
 We can return arrays the same way, all `ArrayBase` aliases have a `Ret`-alias.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{data::managed::array::TypedMatrixRet, prelude::*, weak_handle};
 
@@ -65,7 +70,9 @@ julia_module! {
     fn new_matrix(rows: usize, cols: usize) -> TypedMatrixRet<f64>;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -77,3 +84,4 @@ julia> JuliaModuleTutorial.new_matrix(UInt(4), UInt(2))
  0.0  0.0
  0.0  0.0
 ```
+<!-- LIBTEST_JL END -->

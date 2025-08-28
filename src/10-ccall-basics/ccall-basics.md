@@ -6,6 +6,7 @@ The intent of this chapter is to cover some essential information about `ccall`.
 
 To get started with calling into Rust from Julia, we're going to look at a final embedding example first before creating our first dynamic library. We'll expose a function pointer to Julia and call it with `ccall`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use std::ffi::c_void;
 
@@ -44,6 +45,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 All this example does is call `add`, which adds two numbers and returns the result. We can convert this function to `Value` by converting it to a void pointer first. It's not possible to call `ccall` directly from Rust because the return and argument types must be statically known, so we create a function that `ccall`s the function pointer with the given arguments by evaluating its definition.
 

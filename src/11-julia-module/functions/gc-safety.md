@@ -6,6 +6,7 @@ A thread that can call into Julia is normally in a GC-unsafe state, the unsafe h
 
 If an exported function doesn't need to call into Julia at all, we can ensure it's called in a GC-safe state by annotating the export with `#[gc_safe]`. To simulate a long-running function we're going to sleep for a few seconds.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::{thread::sleep, time::Duration};
 
@@ -23,9 +24,11 @@ julia_module! {
     fn add(a: f64, b: f64) -> f64;
 }
 ```
+<!-- LIBTEST END -->
 
 We can manually create gc-safe blocks.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::{thread::sleep, time::Duration};
 
@@ -57,9 +60,11 @@ julia_module! {
     fn some_operation(len: usize) -> TypedVectorRet<f64>;
 }
 ```
+<!-- LIBTEST END -->
 
 It's possible to revert to a GC-unsafe state in a GC-safe block by inserting a GC-unsafe block with `gc_unsafe`.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use std::{thread::sleep, time::Duration};
 
@@ -92,3 +97,4 @@ julia_module! {
     fn some_operation(len: usize) -> TypedVectorRet<f64>;
 }
 ```
+<!-- LIBTEST END -->

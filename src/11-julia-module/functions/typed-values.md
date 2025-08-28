@@ -2,6 +2,7 @@
 
 While it's nice that we can use `Value` to handle argument types that don't implement `CCallArg`, it's annoying that this doesn't introduce any restrictions on that argument. A `TypedValue` is a `Value` that has been annotated with its type constructor. When we use it as an argument type, the generated function will restrict that argument to that type object and pass it to `ccall` as `Any`.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{data::managed::value::typed::TypedValue, prelude::*};
 
@@ -18,7 +19,9 @@ julia_module! {
     fn add(a: TypedValue<f64>, b: TypedValue<f64>) -> f64;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -32,3 +35,4 @@ ERROR: MethodError: no method matching add(::Int64, ::Float64)
 Closest candidates are:
   add(::Float64, ::Float64)
 ```
+<!-- LIBTEST_JL END -->

@@ -4,6 +4,7 @@ So far, the only Julia function we've called is `println`, which isn't particula
 
 A `Value` is an instance of some Julia type, managed by the GC. If there's a more specific managed type for that Julia type, we can convert the `Value` by casting it with `Value::cast`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -20,9 +21,11 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 Managed types aren't the only types that map between Rust and Julia. There are many types where the layout in Rust matches the layout of the managed data, including most primitive types. These types implement the `Unbox` trait which lets us extract the data from the `Value` with `Value::unbox`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -36,9 +39,11 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 If there's no appropriate type that implements `Unbox` or `Managed`, we can access the fields of a `Value` manually.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -86,6 +91,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 There's a lot going on in this example, but a lot of it is just setup code. We first evaluate some Julia code that defines `CustomType`. Constructors in Julia are just functions linked to a type, so we can call `CustomType`'s constructor by calling the result of the code we've evaluated. Finally, we get to the point and use `Value::get_field` to access the fields before unboxing their content.[^1] The second field is unboxed as a `Bool`, not a `bool`. The Julia `Char` type similarly maps to jlrs's `Char` type. These types exist to avoid any potential mismatches between Rust and Julia.
 

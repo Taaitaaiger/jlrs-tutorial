@@ -8,6 +8,7 @@ Mutating managed data from Rust is generally unsafe in jlrs. The reason essentia
 
 The array types implement `Copy` so it's trivial to create two mutable accessors to the same array, or multiple mutable and immutable accessor in general. It's your responsibility to ensure this doesn't happen. It's possible to avoid this issue to a degree by tracking the array, which we'll cover later in this chapter.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -145,3 +146,4 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->

@@ -4,6 +4,7 @@ Async tasks can call async functions, and while awaiting an async function the r
 
 The easiest way to use async tasks is with an async closure. Let's implement a simple task that adds two numbers.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -42,6 +43,7 @@ fn main() {
         thread_handle.join().expect("runtime thread panicked")
 }
 ```
+<!-- DOCTEST END -->
 
 This is very similar to the closures we've used with scopes so far, the major difference as that it's an async and that it takes an `AsyncGcFrame` that we haven't used before.
 
@@ -51,6 +53,7 @@ Dispatching an async task to the runtime is very similar to dispatching a blocki
 
 We can also use the `AsyncTask` trait. Let's express the previous example with an `AsyncTask`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -100,3 +103,4 @@ fn main() {
     thread_handle.join().expect("runtime thread panicked")
 }
 ```
+<!-- DOCTEST END -->

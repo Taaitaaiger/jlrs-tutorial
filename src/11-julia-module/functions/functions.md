@@ -6,6 +6,7 @@ These traits should not be implemented manually. jlrs provides implementations f
 
 Exporting a function is a matter copying and pasting its signature:
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -19,7 +20,9 @@ julia_module! {
     fn add(a: f64, b: f64) -> f64;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -30,11 +33,13 @@ julia> JuliaModuleTutorial.add(1.0, 2.0)
 julia> JuliaModuleTutorial.add(1, 2.0)
 ERROR: MethodError: no method matching add(::Int64, ::Float64)
 ```
+<!-- LIBTEST_JL END -->
 
 We don't have to mark our function as `extern "C"`, the `julia_module!` macro generates an `extern "C"` wrapper function for every exported function. These wrappers only exist inside the `julia_module_tutorial_init_fn` so we don't need to worry about name conflicts.
 
 Like constants, exported functions can be renamed and documented.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -49,7 +54,9 @@ julia_module! {
     fn add(a: f64, b: f64) -> f64 as add!;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial ... end
 Main.JuliaModuleTutorial
@@ -60,5 +67,6 @@ julia> JuliaModuleTutorial.add!(1.0, 2.0)
 help?> JuliaModuleTutorial.add!
    add!(::Float64, ::Float64)::Float64
 ```
+<!-- LIBTEST_JL END -->
 
 [^1]: i.e., ConstructType is also derived.

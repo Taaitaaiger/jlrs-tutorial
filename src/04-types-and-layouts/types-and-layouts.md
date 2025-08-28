@@ -4,6 +4,7 @@ We've already seen a few different types in action, but we haven't really covere
 
 Every `Value` has a type, or `DataType`, which we can access at runtime.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -17,6 +18,7 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->
 
 This example prints `Float32`, the `DataType` of a 32-bits floating point number in Julia. Internally, a `Value` is a pointer to some memory managed by Julia, and its `DataType` determines the layout of the memory it's pointing to.
 

@@ -15,6 +15,7 @@ These GC-safe alternatives are adapted from similarly-named types found in parki
 
 A similar issue arises if we call arbitrary long-running code that doesn't all into Julia: it doesn't reach a safepoint, if the GC needs to run it needs to wait until this operation has completed. Since the operation doesn't need to call into Julia, it's safe to execute it in a GC-safe block. We can use the `gc_safe` function to do so, it's unsound to interact with Julia any way inside a GC-safe block.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use std::{thread, time::Duration};
 
@@ -43,3 +44,4 @@ fn main() {
     }).expect("cannot init Julia");
 }
 ```
+<!-- DOCTEST END -->

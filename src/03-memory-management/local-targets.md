@@ -4,6 +4,7 @@ The frame we've use so far is a `LocalGcFrame`. It's called local because all ro
 
 Every time we root data by using a mutable reference to a `LocalGcFrame` we consume one of its slots. It's also possible to reserve a slot as an `Output` or `ReusableSlot`, they can be created by calling `LocalGcFrame::output` and `LocalGcFrame::reusable_slot`. These methods consume a slot. The main difference between the two is that `ReusableSlot` is a bit more permissive with the lifetime of the result at the cost of returning unrooted data. They're useful if we need to return multiple instances of managed data from a scope, or want to reuse a slot inside one.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -64,9 +65,11 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 An `UnsizedLocalGcFrame` is similar to a `LocalGcFrame`, the major difference is that its size isn't required to be known at compile time. If the size of the frame is statically known, use `LocalGcFrame`.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -121,3 +124,4 @@ fn main() {
     })
 }
 ```
+<!-- DOCTEST END -->

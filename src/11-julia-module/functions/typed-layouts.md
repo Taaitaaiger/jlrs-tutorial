@@ -2,6 +2,7 @@
 
 If the layout of an immutable type has one or more elided type parameters, the layout doesn't map to a single Julia type and can't implement `ConstructType`. This prevents us from using it as an argument type, despite the fact that it could be passed by value. Just like `TypedValue` let us annotate a `Value` with its type constructor, we can use `TypedLayout` to annotate a layout with its type constructor.
 
+<!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
     data::{layout::typed_layout::TypedLayout, types::construct_type::ConstantBool},
@@ -41,7 +42,9 @@ julia_module! {
     fn get_inner(he: TypedLayout<HasElided, HasElidedTrue>) -> i32;
 }
 ```
+<!-- LIBTEST END -->
 
+<!-- LIBTEST_JL START -->
 ```julia
 julia> module JuliaModuleTutorial
        using JlrsCore.Wrap
@@ -67,3 +70,4 @@ ERROR: MethodError: no method matching get_inner(::Main.JuliaModuleTutorial.HasE
 Closest candidates are:
   get_inner(::Main.JuliaModuleTutorial.HasElided{true})
 ```
+<!-- LIBTEST_JL END -->

@@ -4,6 +4,7 @@ It's possible to combine the functionality of the multithreaded and async runtim
 
 The `AsyncBuilder` provides a `start_mt` method when both the `async-rt` and `multi-rt` features have been enabled that let us use both an `MtHandle` and an `AsyncHandle`. The  `AsyncHandle` lets us send tasks to the main runtime thread, which is useful if we have some code that we must be called from that thread.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -16,11 +17,13 @@ fn main() {
         .unwrap();
 }
 ```
+<!-- DOCTEST END -->
 
 We can also create thread pools where each worker thread can call into Julia and runs an async runtime.[^1] We can configure and create new pools with `MtHandle::pool_builder`. When a pool is spawned, an `AsyncHandle` to the pool is returned. Tasks are sent to this pool instead of a specific thread, it can be handled by any of its workers. If a worker dies due to a panic a new worker is automatically spawned.[^2]
 
 Workers can be dynamically added and removed with `AsyncHandle::try_add_worker` and `AsyncHandle::try_remove_worker`. The pool shuts down when all workers have been removed, all handles have been dropped, or if its closed explicitly. It's not possible to add workers to the async runtime itself, only to pools.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -39,6 +42,7 @@ fn main() {
         .unwrap();
 }
 ```
+<!-- DOCTEST END -->
 
 One additional advantage that pools have over the async runtime thread is that the latency is typically much lower. If we don't need code to run on the main thread specifically, it's more effective to use the multithreaded runtime and create a pool instead.
 

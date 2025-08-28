@@ -10,6 +10,7 @@ println("Hello world!")
 2. Create a scope.
 3. Evaluate the code inside the scope.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -24,6 +25,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 Let's go through this code step-by-step.
 

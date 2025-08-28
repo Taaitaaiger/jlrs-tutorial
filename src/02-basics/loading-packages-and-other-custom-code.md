@@ -4,6 +4,7 @@ Everything we've done so far has involved standard functionality that's availabl
 
 Any package that has been installed for the targeted version of Julia can be loaded with `Runtime::using`.[^1]
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -26,6 +27,7 @@ fn main() {
     });
 }
 ```
+<!-- DOCTEST END -->
 
 The function `dot` isn't defined in the `Main` module until we've called `handle.using("LinearAlgebra")`, which internally just evaluates `using LinearAlgebra`. To restrict our imports, we have to construct a `using` or `import` statement manually and evaluate it with `Value::eval_string`.
 

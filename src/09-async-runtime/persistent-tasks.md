@@ -4,6 +4,7 @@ Persistent tasks let us set up a task that we can send messages to indepently of
 
 To create a persistent task we'll need to implement the `PersistentTask` trait. Let's implement a task that accumulates a sum of floating point numbers.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::prelude::*;
 
@@ -86,6 +87,7 @@ fn main() {
     thread_handle.join().expect("runtime thread panicked")
 }
 ```
+<!-- DOCTEST END -->
 
 When the persistent task is started by the async runtime, the `init` method is called to initialize the state of the task. In this case the state is an instance of `Ref{Float64}`, We can't use a `Float64` directly because `Float64` isn't a mutable type. Any data rooted in the async frame provided to `init` function remains rooted until the task has shut down, a local scope is used to root temporary data so we only need to root the state in the async frame.
 

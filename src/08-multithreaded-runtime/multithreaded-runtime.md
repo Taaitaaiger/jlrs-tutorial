@@ -4,6 +4,7 @@ In all examples so far we've used the local runtime, which is limited to a singl
 
 Using the multithreaded runtime instead of the local runtime is mostly a matter of starting the runtime differently.
 
+<!-- DOCTEST START -->
 ```rust,ignore
 use jlrs::{prelude::*, runtime::builder::Builder};
 
@@ -21,7 +22,7 @@ fn main() {
 
         let t2 = mt_handle.spawn(move |mut mt_handle| {
             mt_handle.with(|handle| {
-                handle.local_scope::<1>(|mut frame| {
+                handle.local_scope::<_, 1>(|mut frame| {
                     // Safety: we're just printing a string
                     unsafe { Value::eval_string(&mut frame, "println(\"Hello from thread 2\")") }
                         .expect("caught exception");
@@ -34,5 +35,6 @@ fn main() {
     }).expect("cannot init Julia");
 }
 ```
+<!-- DOCTEST END -->
 
 Julia is initialized on the current thread when `start_mt` is called, the closure is called on a new thread. This method returns an `MtHandle` that we can use to call into Julia. The `MtHandle` can be cloned, we can create new scoped threads with `MtHandle::spawn`, and by calling `MtHandle::with` the thread is temporarily put into a state where it can create scopes and call into Julia. The runtime thread shuts down when all `MtHandle`s have been dropped.
