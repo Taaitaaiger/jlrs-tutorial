@@ -1,13 +1,6 @@
 # Yggdrasil and jlrs
 
-In the previous chapter we saw how we could write a recipe to build a Rust crate and contribute it to Yggdrasil to distribute it as a JLL package. When the crate we want to build depends on jlrs, we have to deal with a complication: we need to build the library against every version of Julia that we want to support. We'll also need to enable the `yggdrasil` feature. This requires a few adjustments to the recipe.
-
-We're going to assume the crate re-exposes the `yggdrasil` features:
-
-```toml
-[features]
-yggdrasil = ["jlrs/yggdrasil"]
-```
+In the previous chapter we saw how we could write a recipe to build a Rust crate and contribute it to Yggdrasil to distribute it as a JLL package. When the crate we want to build depends on jlrs, we have to deal with a complication: we need to build the library against every version of Julia that we want to support. This requires a few adjustments to the recipe.
 
 The recipe should look as follows:
 
@@ -34,7 +27,7 @@ sources = [
 # Bash recipe for building across all platforms
 script = raw"""
 cd $WORKSPACE/srcdir/{{crate_name}}
-cargo build --features yggdrasil --release --verbose
+cargo build --release --verbose
 install_license LICENSE
 install -Dvm 0755 "target/${rust_target}/release/"*{{crate_name}}".${dlext}" "${libdir}/lib{{crate_name}}.${dlext}"
 """
