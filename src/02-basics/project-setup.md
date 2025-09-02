@@ -48,11 +48,16 @@ It's important to set the `-rdynamic` linker flag when we embed Julia, Julia wil
 
 `RUSTFLAGS="-Clink-args=-rdynamic" cargo build`
 
-It's also possible to set this flag with a `config.toml` file in the project's root directory:
+It's also possible to set this flag with a `config.toml` file in [one of the supported directories] for [supported platforms]:
 
 ```toml
-[target.linux]
+[target.x86_64-unknown-linux-gnu]
 rustflags = [ "-C", "link-args=-rdynamic" ]
+
+[target.aarch64-unknown-linux-musl]
+rustflags = [ "-C", "link-args=-rdynamic" ]
+
+# ...etc
 ```
 
 [dependency chapter]: ../01-dependencies/julia.md
@@ -60,3 +65,7 @@ rustflags = [ "-C", "link-args=-rdynamic" ]
 [^1]: In certain circumstances panicking can cause soundness issues, so it's better to abort.
 
 [^2]: The nitty-gritty reason is that there's some thread-local data that Julia uses constantly. To effectively access this data, it must be defined in an application so the most performant TLS model can be used. By setting the `-rdynamic` linker flag, `libjulia` can find and make use of the definition in our application. If this flag hasn't been set Julia will fall back to a slower TLS model, which has signifant, negative performance implications.
+
+[one of the supported directories]: https://doc.rust-lang.org/cargo/reference/config.html
+
+[supported platforms]: https://doc.rust-lang.org/rustc/platform-support.html

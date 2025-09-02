@@ -34,10 +34,10 @@ jobs:
         run: |
           git clone https://github.com/Taaitaaiger/jlrs.git
           cd jlrs
-          git checkout ef7ca48578f27d5c7d51b901a71977bdc8700375
+          git checkout a95723b1eb394e2bf2bb95a4c6fabd8a893bf86b
           cd ..
           julia -e "import Pkg; Pkg.add(url=\"https://github.com/Taaitaaiger/JlrsCore.jl\", rev=\"5cc78665dcea3a400f10dda831fbf36f66f625a9\")"
           export JLRS_JULIA_DIR="$(dirname $(dirname $(which julia)))"
           export LD_LIBRARY_PATH="${JLRS_JULIA_DIR}/lib:${LD_LIBRARY_PATH}"
-          ./generate_tests.py $(readlink -f jlrs/jlrs)
+          ./generate_tests.py $(readlink -f jlrs/crates/jlrs)
           ./run_tests.sh
