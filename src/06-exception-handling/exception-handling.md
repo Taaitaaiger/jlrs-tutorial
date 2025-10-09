@@ -20,6 +20,7 @@ fn main() {
                 TypedArray::<u8>::new_unchecked(&mut frame, [usize::MAX, usize::MAX]);
             },
             |e| {
+                let e = e.value();
                 println!("caught exception: {e:?}")
             },
         ).expect_err("allocated ridiculously-sized array successfully");

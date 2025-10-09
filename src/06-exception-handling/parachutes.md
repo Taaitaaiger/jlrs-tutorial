@@ -24,7 +24,10 @@ fn main() {
                     with_parachute.push(2);
                     arr
                 },
-                |e| println!("caught exception: {e:?}"),
+                |e| {
+                    let e = e.value();
+                    println!("caught exception: {e:?}")
+                },
             )
         }
         .expect_err("allocated ridiculously-sized array successfully");
