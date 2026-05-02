@@ -22,7 +22,7 @@ panic = "abort"
 crate-type = ["cdylib"]
 
 [dependencies]
-jlrs = { version = "0.22", features = ["jlrs-derive", "ccall"] }
+jlrs = { version = "0.23", features = ["jlrs-derive", "ccall"] }
 ```
 
 It's important that we don't enable any runtime features like `local-rt` when we build a dynamic library.

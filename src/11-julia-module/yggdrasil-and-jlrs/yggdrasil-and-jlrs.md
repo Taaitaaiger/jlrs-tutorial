@@ -7,16 +7,11 @@ The recipe should look as follows:
 ```julia
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg
-
-# See https://github.com/JuliaLang/Pkg.jl/issues/2942
-# Once this Pkg issue is resolved, this must be removed
-uuid = Base.UUID("a83860b7-747b-57cf-bf1f-3e79990d037f")
-delete!(Pkg.Types.get_last_stdlibs(v"1.6.3"), uuid)
+using BinaryBuilder
 
 name = "{{crate_name}}"
 version = v"0.1.0"
-julia_versions = [v"1.10", v"1.11", v"1.12"]
+julia_versions = [v"1.10", v"1.11", v"1.12", v"1.13"]
 
 # Collection of sources required to complete build
 sources = [
@@ -35,8 +30,8 @@ install -Dvm 0755 "target/${rust_target}/release/"*{{crate_name}}".${dlext}" "${
 include("../../L/libjulia/common.jl")
 platforms = vcat(libjulia_platforms.(julia_versions)...)
 
-# Rust toolchain for i686 Windows is unusable
-is_excluded(p) = Sys.iswindows(p) && nbits(p) == 32
+# 32-bit Windows, AArch64 FreeBSD, and riscv64 are not supported
+is_excluded(p) = (Sys.iswindows(p) && nbits(p) == 32) || (Sys.isfreebsd(p) && arch(p) == "aarch64") || arch(p) == "riscv64"
 filter!(!is_excluded, platforms)
 
 # The products that we will ensure are always built
@@ -57,7 +52,6 @@ build_tarballs(ARGS, name, version, sources, script, platforms, products, depend
 
 The main differences with the recipe for a crate that doesn't depend on jlrs are:
 
-- The workaround for issue [#2942].
 - The supported versions of Julia are set.
 - Supported platforms are acquired via `libjulia_platforms`, not `supported_platforms`.
 - `libjulia_jll` is added to the dependencies as a build dependency.

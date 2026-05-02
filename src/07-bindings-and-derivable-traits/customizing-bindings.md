@@ -16,7 +16,7 @@ julia> renamestruct!(layouts, MyZST, "MyZeroSizedType")
 julia> layouts
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, IntoJulia, ValidField, IsBits, ConstructType)]
-#[jlrs(julia_type = "Main.MyZST", zero_sized_type)]
+#[jlrs(julia_type = "MyZST", zero_sized_type)]
 pub struct MyZeroSizedType {
 }
 ```
@@ -35,7 +35,7 @@ julia> renamefields!(layouts, Food, [:burger => "hamburger"])
 julia> layouts
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, IntoJulia, ValidField, IsBits, ConstructType, CCallArg, CCallReturn)]
-#[jlrs(julia_type = "Main.Food")]
+#[jlrs(julia_type = "Food")]
 pub struct Food {
     pub hamburger: ::jlrs::data::layout::bool::Bool,
 }
@@ -48,12 +48,12 @@ julia> struct MyZeroSizedType end
 
 julia> layouts = reflect([MyZeroSizedType]);
 
-julia> overridepath!(layouts, MyZeroSizedType, "Main.A.MyZeroSizedType")
+julia> overridepath!(layouts, MyZeroSizedType, "A.MyZeroSizedType")
 
 julia> layouts
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, IntoJulia, ValidField, IsBits, ConstructType)]
-#[jlrs(julia_type = "Main.A.MyZeroSizedType", zero_sized_type)]
+#[jlrs(julia_type = "A.MyZeroSizedType", zero_sized_type)]
 pub struct MyZeroSizedType {
 }
 ```

@@ -17,7 +17,7 @@ julia> struct MyWrapper
 julia> reflect([MyWrapper])
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, IntoJulia, ValidField, IsBits, ConstructType, CCallArg, CCallReturn)]
-#[jlrs(julia_type = "Main.MyStruct")]
+#[jlrs(julia_type = "MyStruct")]
 pub struct MyStruct {
     pub a: i8,
     pub b: ::jlrs::data::layout::tuple::Tuple2<i8, u8>,
@@ -25,7 +25,7 @@ pub struct MyStruct {
 
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, IntoJulia, ValidField, IsBits, ConstructType, CCallArg, CCallReturn)]
-#[jlrs(julia_type = "Main.MyWrapper")]
+#[jlrs(julia_type = "MyWrapper")]
 pub struct MyWrapper {
     pub ms: MyStruct,
 }
@@ -57,7 +57,7 @@ julia> struct MyUnionStruct
 julia> reflect([MyBitsUnionStruct, MyUnionStruct])
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, ValidField, ConstructType, CCallArg)]
-#[jlrs(julia_type = "Main.MyBitsUnionStruct")]
+#[jlrs(julia_type = "MyBitsUnionStruct")]
 pub struct MyBitsUnionStruct {
     #[jlrs(bits_union_align)]
     _u_align: ::jlrs::data::layout::union::Align2,
@@ -69,7 +69,7 @@ pub struct MyBitsUnionStruct {
 
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, ValidField, ConstructType, CCallArg)]
-#[jlrs(julia_type = "Main.MyUnionStruct")]
+#[jlrs(julia_type = "MyUnionStruct")]
 pub struct MyUnionStruct<'scope, 'data> {
     pub u: ::std::option::Option<::jlrs::data::managed::value::ValueRef<'scope, 'data>>,
 }
@@ -89,7 +89,7 @@ julia> struct MyParametricStruct{T}
 julia> reflect([MyParametricStruct{UInt8}])
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, ValidField, IsBits, ConstructType, CCallArg, CCallReturn)]
-#[jlrs(julia_type = "Main.MyParametricStruct")]
+#[jlrs(julia_type = "MyParametricStruct")]
 pub struct MyParametricStruct<T> {
     pub a: T,
 }
@@ -109,13 +109,13 @@ julia> struct MyElidedStruct{T}
 julia> reflect([MyElidedStruct{UInt8}])
 #[repr(C)]
 #[derive(Clone, Debug, Unbox, ValidLayout, Typecheck, ValidField, IsBits)]
-#[jlrs(julia_type = "Main.MyElidedStruct")]
+#[jlrs(julia_type = "MyElidedStruct")]
 pub struct MyElidedStruct {
     pub a: u8,
 }
 
 #[derive(ConstructType, HasLayout)]
-#[jlrs(julia_type = "Main.MyElidedStruct", constructor_for = "MyElidedStruct", scope_lifetime = false, data_lifetime = false, layout_params = [], elided_params = ["T"], all_params = ["T"])]
+#[jlrs(julia_type = "MyElidedStruct", constructor_for = "MyElidedStruct", scope_lifetime = false, data_lifetime = false, layout_params = [], elided_params = ["T"], all_params = ["T"])]
 pub struct MyElidedStructTypeConstructor<T> {
     _t: ::std::marker::PhantomData<T>,
 }

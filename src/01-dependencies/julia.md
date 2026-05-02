@@ -1,6 +1,6 @@
 # Julia
 
-jlrs currently supports Julia 1.10 up to and including Julia 1.12. Using the most recent stable version is recommended. If you use `juliaup` to manage your Julia installations, you should install [`jlrs-launcher`]. The reason is that to compile jlrs successfully, the path to the Julia's header files and library must be known and this can be tricky to achieve with `juliaup`. By using this launcher application, `juliaup`'s logic is used to find the location of the necessary files and propagated to the launched application.
+jlrs currently supports Julia 1.10 up to and including Julia 1.13. Using the most recent stable version is recommended. If you use `juliaup` to manage your Julia installations, you should install [`jlrs-launcher`]. The reason is that to compile jlrs successfully, the path to the Julia's header files and library must be known and this can be tricky to achieve with `juliaup`. By using this launcher application, `juliaup`'s logic is used to find the location of the necessary files and propagated to the launched application.
 
 There are several platform-dependent ways to make these paths known if Julia is installed manually:
 
