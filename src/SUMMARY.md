@@ -87,6 +87,7 @@
   - [Generic functions](./11-julia-module/generic-functions/generic-functions.md)
     - [Type environment](./11-julia-module/generic-functions/type-environment.md)
   - [`Type aliases`](./11-julia-module/type-aliases/type-aliases.md)
+  - [`Public items`](./11-julia-module/public-items/public-items.md)
   - [Yggdrasil and jlrs](./11-julia-module/yggdrasil-and-jlrs/yggdrasil-and-jlrs.md)
 
 # Other topics
