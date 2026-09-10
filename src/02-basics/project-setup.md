@@ -23,7 +23,7 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-jlrs = {version = "0.23", features = ["local-rt"]}
+jlrs = {version = "0.24", features = ["local-rt"]}
 ```
 
 If Julia has been installed and we've configured our environment according to the steps in the [dependency chapter], building and running should succeed:

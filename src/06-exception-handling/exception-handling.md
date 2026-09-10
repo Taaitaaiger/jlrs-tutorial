@@ -2,7 +2,7 @@
 
 Many functions in Julia can throw exceptions, including low-level functions exposed by jlrs. Examples include calling a Julia function with incorrect arguments and trying to allocate a ridiculously-sized array. These functions are typically exposed twice: as a function that catches exceptions, and one that doesn't.
 
-The function that doesn't catch the exception is always unsafe. Julia exceptions are implemented with `longjmp`, when an exception is thrown control flow jumps to the nearest enclosing catch block, so we must guarantee we don't jump over any pending drops. We can call arbitrary functions in a try-block with a custom exception handler with the `catch_exceptions` function, but this remains unsafe because we still have to guarantee we don't jump over any drops. It's fine to jump out of some deeply nested scope as long as any frame that is jumped over is a ["Plain Old Frame"].
+The function that doesn't catch the exception is always unsafe. Julia exceptions are implemented with `longjmp`, when an exception is thrown control flow jumps to the nearest enclosing catch block, so we must guarantee we don't jump over any pending drops. We can call arbitrary functions in a try-block with a custom exception handler with the `catch_exceptions` function, but this remains unsafe because we still have to guarantee we don't jump over any drops. It's fine to jump out of some deeply nested scopes as long as any frame that is jumped over is a ["Plain Old Frame"]. The local_scope methods are _not_ exception-safe; they use drop internally. If you want to create a new scope in the try-callback, use `exception_safe_scope` or `unsized_local_scope`.
 
 If an exception is thrown and there is no handler available, Julia aborts the process.
 

@@ -55,5 +55,3 @@ The main differences with the recipe for a crate that doesn't depend on jlrs are
 - The supported versions of Julia are set.
 - Supported platforms are acquired via `libjulia_platforms`, not `supported_platforms`.
 - `libjulia_jll` is added to the dependencies as a build dependency.
-
-[#2942]: https://github.com/JuliaLang/Pkg.jl/issues/2942

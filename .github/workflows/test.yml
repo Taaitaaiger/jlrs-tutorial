@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         rust: [stable]
-        julia: ['1.10', '1.11', '1.12']
+        julia: ['1.10', '1.11', '1.12', '1.13']
         allow-fail: [false]
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
       - name: Run tests
         run: |
-          julia -e "import Pkg; Pkg.add(url=\"https://github.com/Taaitaaiger/JlrsCore.jl\", rev=\"3fc603a1cf8d4e0c16a57027f15d00232f47ac4a\")"
+          julia -e "import Pkg; Pkg.add(url=\"https://github.com/Taaitaaiger/JlrsCore.jl\", rev=\"0f1b7cba4eeedae260cb48374716f3cd551fc8c0\")"
           export JLRS_JULIA_DIR="$(dirname $(dirname $(which julia)))"
           export LD_LIBRARY_PATH="${JLRS_JULIA_DIR}/lib:${LD_LIBRARY_PATH}"
           ./generate_tests.py

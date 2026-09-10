@@ -22,7 +22,7 @@ panic = "abort"
 crate-type = ["cdylib"]
 
 [dependencies]
-jlrs = { version = "0.23", features = ["jlrs-derive", "ccall"] }
+jlrs = { version = "0.24", features = ["jlrs-derive", "ccall"] }
 ```
 
 It's important that we don't enable any runtime features like `local-rt` when we build a dynamic library.
@@ -45,7 +45,7 @@ The macro is transformed into a single function, `julia_module_tutorial_init_fn`
 module JuliaModuleTutorial
 using JlrsCore.Wrap
 
-@wrapmodule("/path/to/libjulia_module_tutorial", :julia_module_tutorial_init_fn)
+@wrapmodule(() -> "/path/to/libjulia_module_tutorial", :julia_module_tutorial_init_fn)
 
 function __init__()
     @initjlrs
@@ -54,3 +54,18 @@ end
 ```
 
 This is all the Julia code we'll need to write, the `@wrapmodule` macro generates the content of the module. For the sake of brevity, code samples in the following sections will write `module JuliaModuleTutorial ... end` as a shorthand for this module definition.
+
+If the wrapped code uses data from other packages, e.g. types from `StaticArrays`, these packages must be specified in `@initjlrs`:
+
+```julia
+module JuliaModuleTutorial
+using JlrsCore.Wrap
+using StaticArrays
+
+@wrapmodule(() -> "/path/to/libjulia_module_tutorial", :julia_module_tutorial_init_fn)
+
+function __init__()
+    @initjlrs [StaticArrays]
+end
+end
+```

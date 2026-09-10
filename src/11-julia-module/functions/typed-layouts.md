@@ -5,7 +5,7 @@ If the layout of an immutable type has one or more elided type parameters, the l
 <!-- LIBTEST START -->
 ```rust,ignore
 use jlrs::{
-    data::{layout::typed_layout::TypedLayout, types::construct_type::ConstantBool},
+    data::{layout::typed_layout::TypedLayout, types::construct_type::constants::ConstantBool},
     prelude::*,
 };
 
