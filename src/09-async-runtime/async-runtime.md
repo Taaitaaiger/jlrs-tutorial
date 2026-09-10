@@ -1,6 +1,6 @@
 # Async runtime
 
-The async runtime lets us run Julia on a background thread, its handle lets us send tasks to this thread. We need to enable the `async-rt` feature to use it. Some tasks support async operations, so we'll also need an async executor. A tokio-based executor is available when the `tokio-rt` feature is enabled, this feature automatically enables `async-rt` as well. The async runtime requires  using at least Rust 1.85.
+The async runtime lets us run Julia on a background thread, its handle lets us send tasks to this thread. We need to enable the `async-rt` feature to use it. Some tasks support async operations, so we'll also need an async executor. A tokio-based executor is available when the `tokio-rt` feature is enabled, this feature automatically enables `async-rt` as well.
 
 <!-- DOCTEST START -->
 ```rust,ignore
