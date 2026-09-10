@@ -92,36 +92,39 @@ where
 fn main() {
     let handle = Builder::new().start_local().expect("cannot init Julia");
 
-    handle.unsized_local_scope(2, |mut frame| {
-        let mut output = frame.output();
-        let mut reusable_slot = frame.reusable_slot();
-
-        {
-            let result = add(&mut output, 1, 2).expect("could not add numbers");
-            let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
-            assert_eq!(unboxed, 3);
-        }
-
-        {
-            let result = add(output, 1, 2).expect("could not add numbers");
-            let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
-            assert_eq!(unboxed, 3);
-        }
-
-        {
-            let result = add(&mut reusable_slot, 1, 2).expect("could not add numbers");
-
-            // Safety: result is rooted until we use `reusable_slot` again
-            let unboxed = unsafe { result.as_value() }.unbox::<u8>().expect("cannot unbox as u8");
-            assert_eq!(unboxed, 3);
-        }
-
-        {
-            let result = add(reusable_slot, 1, 2).expect("could not add numbers");
-            let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
-            assert_eq!(unboxed, 3);
-        }
-    })
+    // Safety: we don't call any functions which can throw exceptions
+    unsafe {
+        handle.unsized_local_scope(2, |mut frame| {
+            let mut output = frame.output();
+            let mut reusable_slot = frame.reusable_slot();
+    
+            {
+                let result = add(&mut output, 1, 2).expect("could not add numbers");
+                let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
+                assert_eq!(unboxed, 3);
+            }
+    
+            {
+                let result = add(output, 1, 2).expect("could not add numbers");
+                let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
+                assert_eq!(unboxed, 3);
+            }
+    
+            {
+                let result = add(&mut reusable_slot, 1, 2).expect("could not add numbers");
+    
+                // Safety: result is rooted until we use `reusable_slot` again
+                let unboxed = unsafe { result.as_value() }.unbox::<u8>().expect("cannot unbox as u8");
+                assert_eq!(unboxed, 3);
+            }
+    
+            {
+                let result = add(reusable_slot, 1, 2).expect("could not add numbers");
+                let unboxed = result.unbox::<u8>().expect("cannot unbox as u8");
+                assert_eq!(unboxed, 3);
+            }
+        })
+    }
 }
 ```
 <!-- DOCTEST END -->
