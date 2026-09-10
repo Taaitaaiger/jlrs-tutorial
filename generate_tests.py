@@ -37,7 +37,7 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-jlrs = {{version = "0.23", {jlrs_path}features = ["full", "ccall"]}}"""
+jlrs = {{version = "0.24", {jlrs_path}features = ["full", "ccall"]}}"""
 
 
 def cargo_toml_lib_template(name, jlrs_path):
@@ -63,7 +63,7 @@ panic = "abort"
 crate-type = ["cdylib"]
 
 [dependencies]
-jlrs = {{ {jlrs_path}version = "0.23", features = ["jlrs-derive", "ccall", "complex"] }}"""
+jlrs = {{ {jlrs_path}version = "0.24", features = ["jlrs-derive", "ccall", "complex"] }}"""
 
 
 def bin_fragment(bin_name):
